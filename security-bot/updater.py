@@ -19,11 +19,13 @@ def update_package(package, fixed_version):
                 continue
 
             if pkg_name == package:
-                temp.write(f"{package}=={fixed_version}\n")
-                print(f"Updated {package} to {fixed_version}")
-            else:
-                temp.write(line)
-
+                new_line = f"{package}=={fixed_version}\n"
+                if line.strip() != new_line.strip():
+                    temp.write(new_line)
+                    print(f"Updated {package} to {fixed_version}")
+                else:
+                    temp.write(line)
+                    
     os.replace(temp_file, "requirements.txt")
 
 

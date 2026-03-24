@@ -14,10 +14,17 @@ def main():
         print("No vulnerabilities found")
         return "NO_VULNERABILITIES"
 
+    # for vuln in vulns:
+    #     update_package(vuln["package"], vuln["fixed_version"])
+    seen = set()
+
     for vuln in vulns:
-        update_package(vuln["package"], vuln["fixed_version"])
+        pkg = vuln["package"]
+
+        if pkg not in seen:
+            update_package(pkg, vuln["fixed_version"])
+            seen.add(pkg)
     return "VULNERABILITIES_FOUND"
-# nkeskf
 
 if __name__ == "__main__":
     result = main()
