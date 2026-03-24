@@ -6,10 +6,11 @@ inputs:
     description: "Path to Trivy JSON report"
     required: true
     default: "security-bot/report/trivy_report.json"
-  
+
+# ✅ ADD THIS BLOCK
 outputs:
   fix_needed:
-    description: "Whether vulnerabilities were found"
+    description: "Whether fix is required"
     value: ${{ steps.run_bot.outputs.fix_needed }}
 
 runs:
@@ -28,11 +29,17 @@ runs:
       id: run_bot
       run: |
         OUTPUT=$(python3 $GITHUB_ACTION_PATH/security-bot/main.py)
+        
+        echo "=== SCRIPT OUTPUT ==="
         echo "$OUTPUT"
+        echo "====================="
 
-        if [[ "$OUTPUT" == *"VULNERABILITIES_FOUND"* ]]; then
+        # ✅ FORCE CLEAN MATCH
+        if echo "$OUTPUT" | grep -q "VULNERABILITIES_FOUND"; then
           echo "fix_needed=true" >> $GITHUB_OUTPUT
+          echo "DEBUG: fix_needed=true"
         else
           echo "fix_needed=false" >> $GITHUB_OUTPUT
+          echo "DEBUG: fix_needed=false"
         fi
       shell: bash
