@@ -6,6 +6,11 @@ inputs:
     description: "Path to Trivy JSON report"
     required: true
     default: "security-bot/report/trivy_report.json"
+  
+outputs:
+  fix_needed:
+    description: "Whether vulnerabilities were found"
+    value: ${{ steps.run_bot.outputs.fix_needed }}
 
 runs:
   using: "composite"
