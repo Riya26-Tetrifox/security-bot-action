@@ -1,0 +1,33 @@
+name: "Security Bot Action"
+description: "Scan SBOM report and auto-fix vulnerabilities"
+
+inputs:
+  report_path:
+    description: "Path to Trivy JSON report"
+    required: true
+    default: "security-bot/report/trivy_report.json"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: pip install -r security-bot/requirements.txt
+      shell: bash
+
+    - name: Run Security Bot
+      id: run_bot
+      run: |
+        OUTPUT=$(python3 security-bot/main.py)
+        echo "$OUTPUT"
+
+        if [[ "$OUTPUT" == *"VULNERABILITIES_FOUND"* ]]; then
+          echo "fix_needed=true" >> $GITHUB_OUTPUT
+        else
+          echo "fix_needed=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
