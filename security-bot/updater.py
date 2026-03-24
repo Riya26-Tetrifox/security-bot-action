@@ -1,3 +1,9 @@
+
+
+
+
+
+
 from packaging.requirements import Requirement
 import os
 
@@ -5,13 +11,9 @@ def update_package(package, fixed_version):
     if not fixed_version:
         return
 
-    # ✅ Get project root path (NOT action folder)
-    repo_path = os.getcwd()
-    req_file = os.path.join(repo_path, "requirements.txt")
+    temp_file = "requirements_tmp.txt"
 
-    temp_file = os.path.join(repo_path, "requirements_tmp.txt")
-
-    with open(req_file, "r") as f, open(temp_file, "w") as temp:
+    with open("requirements.txt", "r") as f, open(temp_file, "w") as temp:
         for line in f:
             stripped = line.strip()
 
@@ -29,47 +31,7 @@ def update_package(package, fixed_version):
                     print(f"Updated {package} to {fixed_version}")
                 else:
                     temp.write(line)
-            else:
-                # ✅ IMPORTANT: keep other packages
-                temp.write(line)
-
-    # ✅ Replace original file in PROJECT repo
-    os.replace(temp_file, req_file)
-
-
-
-
-
-
-
-# from packaging.requirements import Requirement
-# import os
-
-# def update_package(package, fixed_version):
-#     if not fixed_version:
-#         return
-
-#     temp_file = "requirements_tmp.txt"
-
-#     with open("requirements.txt", "r") as f, open(temp_file, "w") as temp:
-#         for line in f:
-#             stripped = line.strip()
-
-#             try:
-#                 req = Requirement(stripped)
-#                 pkg_name = req.name
-#             except:
-#                 temp.write(line)
-#                 continue
-
-#             if pkg_name == package:
-#                 new_line = f"{package}=={fixed_version}\n"
-#                 if line.strip() != new_line.strip():
-#                     temp.write(new_line)
-#                     print(f"Updated {package} to {fixed_version}")
-#                 else:
-#                     temp.write(line)
                     
-#     os.replace(temp_file, "requirements.txt")
+    os.replace(temp_file, "requirements.txt")
 
 

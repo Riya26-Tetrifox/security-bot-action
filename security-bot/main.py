@@ -14,16 +14,17 @@ def main():
         print("No vulnerabilities found")
         return "NO_VULNERABILITIES"
 
+    # seen = set()
+
     # for vuln in vulns:
-    #     update_package(vuln["package"], vuln["fixed_version"])
-    seen = set()
+    #     pkg = vuln["package"]
 
+    #     if pkg not in seen:
+    #         update_package(pkg, vuln["fixed_version"])
+    #         seen.add(pkg)
+    
     for vuln in vulns:
-        pkg = vuln["package"]
-
-        if pkg not in seen:
-            update_package(pkg, vuln["fixed_version"])
-            seen.add(pkg)
+        update_package(vuln["package"], vuln["fixed_version"])
     return "VULNERABILITIES_FOUND"
 
 if __name__ == "__main__":
