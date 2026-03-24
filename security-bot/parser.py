@@ -7,7 +7,7 @@ def get_vulnerable_packages(report_file):
 
     for result in data.get("Results", []):
         for vuln in result.get("Vulnerabilities", []):
-            if vuln.get("Severity") in ["HIGH", "CRITICAL"] and vuln.get("Status") != "fixed":
+            if vuln.get("Severity") in ["HIGH", "CRITICAL"] and vuln.get("FixedVersion"):
                 vulnerabilities.append({
                     "package": vuln["PkgName"],
                     "current_version": vuln["InstalledVersion"],
