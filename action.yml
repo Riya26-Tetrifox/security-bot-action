@@ -16,13 +16,13 @@ runs:
         python-version: 3.11
 
     - name: Install dependencies
-      run: pip install -r security-bot/requirements.txt
+      run: pip install -r $GITHUB_ACTION_PATH/security-bot/requirements.txt
       shell: bash
 
     - name: Run Security Bot
       id: run_bot
       run: |
-        OUTPUT=$(python3 security-bot/main.py)
+        OUTPUT=$(python3 $GITHUB_ACTION_PATH/security-bot/main.py)
         echo "$OUTPUT"
 
         if [[ "$OUTPUT" == *"VULNERABILITIES_FOUND"* ]]; then
